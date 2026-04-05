@@ -199,7 +199,7 @@
 
     // Increment display counter so the user sees Word 1, Word 2, ...
     questionNumber++;
-    wordDisplay.textContent = `${currentWordData.word} (${questionNumber}) 72`;
+    wordDisplay.textContent = `${currentWordData.word} (${questionNumber})`;
 
     const options = shuffle([currentWordData.correct, ...currentWordData.wrongDefs]);
     createOptions(options);
