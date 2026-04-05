@@ -1,0 +1,752 @@
+/*from index.html */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #d5d7d9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 99%; /* Changes from fixed 1800px to a flexible percentage */
+    margin: 5px auto;
+    padding: 5px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box; /* Crucial: keeps padding inside the width */
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to move to the next row if they don't fit */
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.cat-card {
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    padding: 20px 15px;
+    width: 180px; /* Set a fixed width so they look like uniform 'notes' */
+    min-height: 400px;
+    transition: transform 0.2s;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #673ab7;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.subtitle {
+    color: #555;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.cat-card:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(103, 58, 183, 0.7);
+}
+
+.cat-title {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+/*.cat-desc {
+  font-size: 0.98em;
+  color: #666;
+  margin-bottom: 12px;
+}*/
+.cat-link {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #673ab7;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.cat-link:hover {
+    background: #512da8;
+}
+@media (max-width: 900px) {
+    .categories {
+        flex-direction: column;
+        align-items: center;
+    }
+    .cat-card {
+        width: 90%;
+    }
+}
+
+.navbut {
+    border: solid 0 #d3d3d3;
+    border-radius: 4px;
+    text-decoration: none;
+    padding: 1px;
+}
+
+.navbut:hover {
+    border: solid 1px orange;
+    border-radius: 4px;
+}
+
+a {
+    color: #1a0dab;
+}
+
+/* end index.html */
+
+
+
+
+body {
+  font-family: Arial, sans-serif;
+  background: #E0E0E0;
+  color: #555555;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+}
+
+
+h1 {
+  text-align: center;
+  padding-top: 24px;
+  margin-top: 0;
+  color: #003366;
+}
+
+
+/* Grid container with 4 columns */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 2fr .8fr .9fr;
+  gap: 5px;
+  padding: 0 20px;
+  max-width: 1650px;
+  margin: 0 auto 40px auto;
+}
+
+
+/* Sidebar columns styling */
+.left-column, .right-column {
+  background: #D3D3D3;
+  border: 1px solid white;
+  border-radius: 12px;
+  padding: 0 0 18px 0;
+  box-shadow: 0 2px 8px #e3e7ed;
+  min-height: 400px;
+  font-size: 0.95em;
+  text-align: justify;
+  color: navy;
+  overflow-y: auto;
+  /* max-height: 80vh;  Prevent sidebar too tall */
+}
+
+
+/* Quiz column styling */
+.quiz-col {
+  background: #D3D3D3;
+  border: 1px solid white;
+  border-radius: 12px;
+  padding: 0 0 18px 0;
+  box-shadow: 0 2px 8px #e3e7ed;
+  color: navy;
+  min-width: 0; /* allows shrinking inside grid cells */
+  overflow-wrap: break-word; /* wrap long text nicely */
+  box-sizing: border-box; /* ensure padding/border do not expand width */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+
+.quiz-header {
+  background: #0000FF;
+  color: #00FFFF;
+  padding: 14px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  margin-bottom: 12px;
+  user-select: none;
+}
+
+.quiz-content {
+  padding: 10px 20px;
+
+}
+
+#col3 {
+  max-width: 240px;
+}
+
+
+.question {
+  margin-bottom: 18px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e3e7ed;
+}
+
+.qtext {
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 1em;
+  color: navy;
+}
+
+
+/* Wrap the labels in .options to enable shuffle */
+.options label {
+  display: block;
+  margin: 4px 0;
+  cursor: pointer;
+  color: navy;
+}
+
+.options input[type="radio"] {
+  margin-right: 8px;
+  transform: scale(0.95);
+  vertical-align: middle;
+}
+
+.feedback {
+  font-style: italic;
+  margin-top: 6px;
+  min-height: 22px;
+}
+
+.quiz-summary {
+  background: #e3f2fd;
+  margin-top: 16px;
+  padding: 14px;
+  font-weight: bold;
+  color: #0000FF;
+  border-radius: 6px;
+  text-align: center;
+  min-height: 50px;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 20px 0 10px;
+  padding: 0 12px;
+}
+
+
+.nav-btn, .check-btn, .reset-btn {
+  display: flex;               /* Needed for align-items to work */
+  align-items: center;         /* Vertically center content */
+  justify-content: center;     /* Horizontally center content */
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  color: #fff;
+  user-select: none;
+}
+
+
+.nav-btn {
+  background: blue;
+}
+
+.nav-btn:hover {
+  background: #000080;
+  color: aqua;
+}
+
+.check-btn {
+  background-color: green;
+}
+
+.check-btn:hover {
+  background-color: darkgreen;
+  color: aqua;
+}
+
+.reset-btn {
+  background-color: red;
+}
+
+.reset-btn:hover {
+  background-color: darkred;
+  color: aqua;
+}
+
+
+/* Responsive breakpoint */
+@media (max-width: 1100px) {
+  .grid-layout {
+    display: block;
+    padding: 10px;
+  }
+  .left-column, .right-column {
+    display: none;
+  }
+  .quiz-col {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: #CC5500; /* burnt orange */
+}
+
+nav {
+  display: block;
+  font-size: 14px;
+  line-height: 1.70;
+  padding-left: 6px;
+  padding-right: 5px;
+  word-spacing: -2px;
+  /*max-height: 78vh;*/
+  overflow-y: auto;
+}
+
+
+/* Remove bullet points from all lists in the nav */
+nav ul,
+nav ul {
+  list-style-type: none !important;
+  margin: 0;
+  padding-left: 0;
+}
+
+nav ul ul {
+  padding-left: 14px; /* Nested list indent */
+}
+
+nav li {
+  margin: 0;
+  padding: 0;
+}
+
+nav li::before {
+  content: none !important; /* Remove any pseudo bullet */
+}
+
+
+/* Collapsible styles for details/summary */
+nav details {
+  margin-bottom: 3px;
+  background: #e7edf5;
+  border-radius: 6px;
+  padding: 2px 8px;
+  box-shadow: 0 1px 2px #dbe2ed;
+}
+
+nav summary {
+  font-weight: bold;
+  color: #003366;
+  cursor: pointer;
+  padding: 1px 0;
+  outline: none;
+  user-select: none;
+}
+
+nav details[open] > summary {
+  color: #BE5103;
+}
+
+nav a {
+  color: navy;
+  font-size: 0.95em;
+  margin: 0;
+}
+
+nav a:hover {
+  color: #CC5500;
+}
+
+.quiz-btn {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  border: none;
+  background: #1976d2;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.quiz-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+@media (max-width: 600px) {
+  .quiz-content {
+    max-width: 98vw !important;
+  }
+  #wheel {
+    width: 70vw !important;
+    height: 70vw !important;
+    min-width: 60px !important;
+    max-width: 150px !important;
+  }
+}
+
+/*  SPIN THE WHEEL GAME */
+
+.slice {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0% 0%;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  border: 1px solid #fff;
+}
+
+.slice0 {
+  background: #e74c3c;
+  transform: rotate(0deg);
+}
+
+.slice60 {
+  background: #f39c12;
+  transform: rotate(60deg);
+}
+
+.slice120 {
+  background: #27ae60;
+  transform: rotate(120deg);
+}
+
+.slice180 {
+  background: #2980b9;
+  transform: rotate(180deg);
+}
+
+.slice240 {
+  background: #8e44ad;
+  transform: rotate(240deg);
+}
+
+.slice300 {
+  background: #c0392b;
+  transform: rotate(300deg);
+}
+
+#spinBtn {
+  padding: 10px 20px;
+  font-size: 1em;
+  background: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#wheel {
+  margin: 0 auto 16px auto;
+  width: 100px;
+  height: 100px;
+  border: 10px solid #003366;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px #333;
+  transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+#pointer {
+  margin: 0 auto 4px auto;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 26px solid #003366;
+}
+
+.vocab-quiz-container {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #c0c2c3;
+  min-height: 450px;
+  width: fit-content;
+}
+
+.vocab-quiz-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: blue;
+}
+
+#scoreDisplay, #wordDisplay {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #1976d2;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+#wordDisplay {
+  margin-bottom: 10px;
+  min-height: 1.4em;
+  text-align: center;
+}
+
+.quiz-btn.full-width {
+  width: 100%;
+}
+
+#result {
+  min-height: 2em;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+#nextBtn {
+  min-height: 2.5em; /* reserve space even when display:none */
+  display: block; /* consider display block for height calculation */
+  width: 100%;
+  background: #4caf50;
+}
+
+
+
+/* Pattern Tapper
+
+.column3-game-container {
+  max-width: 260px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 8px 6px;
+  background: #c0c2c3;
+  border-radius: 8px;
+  color: #003366;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+.instructions {
+  background: #e7f0fa;
+  border-radius: 6px;
+  color: #353c48;
+  font-size: 0.97em;
+  padding: 7px 10px 9px 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.instructions li {
+  margin-bottom: 2px;
+}
+.column3-game-container h1 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+.level-info {
+  font-weight: bold;
+  color: navy;
+  margin-bottom: 10px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-gap: 6px;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+}
+.cell {
+  width: 60px;
+  height: 60px;
+  background: #e3e3e3;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  color: #1976d2;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+.cell.active {
+  background-color: #1e88e5;
+  color: #fff;
+}
+button.quiz-btn {
+  width: 100%;
+  padding: 4px;
+  font-size: 0.9rem;
+  margin: 2px 0;
+  border-radius: 6px;
+  border: none;
+  background: #1976d2;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+button.quiz-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+#feedback {
+  min-height: 1.8em;
+  font-weight: bold;
+  margin-top: 8px;
+  text-align: center;
+  color: #4caf50;
+}
+.level-select-container {
+  margin-bottom: 8px;
+}
+select.level-select {
+  padding: 4px 8px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #888;
+  margin-left: 7px;
+  background: #f2f2f2;
+  color: #003366;
+} */
+
+/* Tic Tac Toe
+
+.ttt-container {
+  max-width: 210px;    /* or 240px if your space allows */
+  margin: 0 auto;
+  padding: 10px 0;
+  border-radius: 10px;
+  background: #ffeecc;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 100%;
+  aspect-ratio: 1 / 1;    /* Ensures square grid */
+  margin-bottom: 10px;
+}
+
+.ttt-cell {
+  aspect-ratio: 1 / 1;   /* Each cell is perfectly square */
+  width: 100%;           /* Cell fills grid column */
+  font-size: 1.7rem;     /* Adjust for legibility */
+  background: #fff5e1;
+  border: 2px solid #ffb347;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+#ttt-status {
+  height: 2.2em;
+  color: #333;
+  font-size: 1.1em;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.ttt-cell.x {
+  color: #388be3;
+  background: #cdf0ff;
+}
+.ttt-cell.o {
+  color: #fc4e7c;
+  background: #ffe7fb;
+}
+.ttt-cell.winner {
+  background: #ffe066 !important;
+}
+#ttt-reset {
+  padding: 8px 24px;
+  border: none;
+  border-radius: 7px;
+  background: #ffc14d;
+  color: #444;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 6px;
+}
+/*end tic tac toe */
+
+
+/* ----------------- START TIMER COMPONENT ----------------- */
+.timer-container {
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #c0c2c3;
+  width: fit-content;
+  overflow: hidden;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 18px 0;
+}
+
+
+.timer-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #1976d2;
+}
+
+.timer-display {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.timer-button-group {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Dedicated styles for timer buttons only */
+.timer-btn {
+  padding: 3px 6px;
+  border: none;
+  border-radius: 4px;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.timer-btn:hover {
+  background-color: #125a9d;
+}
+/* ----------------- END TIMER COMPONENT ----------------- */
+

@@ -1,408 +1,783 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Realistic Fireworks Display with Sound</title>
+    <meta charset="UTF-8" />
+    <meta name="title" content="Quiz Universe: Interactive Quizzes on Coding, Science, Math & More" />
+    <meta
+      name="description"
+      content="Test your knowledge across a universe of topics. Explore interactive quizzes in English, Coding (Python, JS), Science, Math, AI, and Networking for all levels." />
+    <meta
+      name="keywords"
+      content="quizzes, online quiz, coding quiz, math practice, science trivia, learn python, english grammar test, AI fundamentals, networking quiz" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="author" content="Quiz Universe" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta property="og:title" content="Quiz Universe: Explore Any Topic" />
+    <meta
+      property="og:description"
+      content="Level up your skills with interactive quizzes. From JavaScript to Music Theory, find your next challenge here." />
+    <meta property="og:image" content="https://yourdomain.com/assets/og-image.jpg" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://yourdomain.com/" />
+    <meta property="twitter:title" content="Quiz Universe: Explore Any Topic" />
+    <meta
+      property="twitter:description"
+      content="Level up your skills with interactive quizzes. From JavaScript to Music Theory, find your next challenge here." />
+    <meta property="twitter:image" content="https://yourdomain.com/assets/og-image.jpg" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Quiz Universe: Explore Any Topic</title>
     <style>
       body {
+        font-family: Arial, sans-serif;
+        background: #d5d7d9;
         margin: 0;
-        overflow: hidden;
-        background-color: #000;
-      }
-      canvas {
-        display: block;
+        padding: 0;
       }
 
-      p {
-        font-family: 'Lobster', 'Pacifico', cursive, sans-serif;
-        font-size: 1.5em;
-        letter-spacing: 2.5px;
-        animation: colorChange 8s linear infinite;
-        color: silver; /* initial fallback */
-        background: red;
+      .container {
+        max-width: 99%; /* Changes from fixed 1800px to a flexible percentage */
+        margin: 5px auto;
+        padding: 5px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box; /* Crucial: keeps padding inside the width */
       }
 
-
-      @keyframes colorChange {
-        0% {
-          color: silver;
-        }
-        20% {
-          color: white;
-        }
-        30% {
-          color: aqua
-        }
-        40% {
-          color: gold;
-        }
-        60% {
-          color: purple;
-        }
-        80% {
-          color: green;
-        }
-        100% {
-          color: silver;
-        }
+      .categories {
+        display: flex;
+        flex-wrap: wrap; /* Allows cards to move to the next row if they don't fit */
+        justify-content: center;
+        gap: 15px;
+        width: 100%;
       }
 
+      .cat-card {
+        background: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        padding: 20px 15px;
+        width: 180px; /* Set a fixed width so they look like uniform 'notes' */
+        min-height: 400px;
+        transition: transform 0.2s;
+        box-sizing: border-box;
+      }
 
-      div {
+      h1 {
+        color: #673ab7;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .subtitle {
+        color: #555;
+        margin-bottom: 20px;
         text-align: center;
       }
 
-      span {
-        position: absolute;
-        /*bottom: 650px;*/
-        top: 50px;
-        width: 100%; /* **REQUIRED:** Set an explicit width that fits your garland */
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+      .cat-card:hover {
+        transform: translateY(-4px) scale(1.04);
+        box-shadow: 0 4px 16px rgba(103, 58, 183, 0.7);
       }
 
-
-      /* 1. Base Bulb Style */
-      .bulb {
-        width: 6px;
-        height: 10px;
-        border-radius: 50%; /* Makes it a circle */
-        margin: 13px;
-        display: inline-block; /* Allows them to sit side-by-side */
-
-
-        /* Initial Color (Blue) and Box Shadow for a glow effect */
-        background-color: #00BFFF;
-        box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 10px #00BFFF;
-
-        /* 2. Apply the Animation */
-        animation: flash 1s infinite alternate;
+      .cat-title {
+        font-size: 1.6em;
+        font-weight: bold;
+        margin-bottom: 8px;
       }
-
-      /* 3. Define the Animation Keyframes */
-      @keyframes flash {
-        from {
-          opacity: 1; /* Fully lit */
+      /*.cat-desc {
+		font-size: 0.98em;
+		color: #666;
+		margin-bottom: 12px;
+	}*/
+      .cat-link {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #673ab7;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .cat-link:hover {
+        background: #512da8;
+      }
+      @media (max-width: 900px) {
+        .categories {
+          flex-direction: column;
+          align-items: center;
         }
-        to {
-          opacity: 0.1; /* Dims down (almost off) */
+        .cat-card {
+          width: 90%;
         }
       }
 
-      /* 4. Color Variation (for easy expansion) */
-      #flashing-bulb-1 {
-        /* This bulb will be blue (defined in .bulb, but you could override it here) */
+      .navbut {
+        border: solid 0 #d3d3d3;
+        border-radius: 4px;
+        text-decoration: none;
+        padding: 1px;
       }
 
-      /* Example of a Red Bulb */
-      .red {
-        background-color: #FF0000;
-        box-shadow: 0 0 5px #FF0000, 0 0 10px #FF0000, 0 0 10px #FF0000;
+      .navbut:hover {
+        border: solid 1px orange;
+        border-radius: 4px;
       }
 
-      /* Example of a Green Bulb */
-      .green {
-        background-color: #00FF00;
-        box-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 10px #00FF00;
+      a {
+        color: #1a0dab;
       }
-
-
-      /* Example of a Orange Bulb */
-      .orange {
-        background-color: #FFA500;
-        box-shadow: 0 0 5px #FFA500, 0 0 10px #FFA500, 0 0 10px #FFA500;
-      }
-
-      /* Example of a yellow Bulb */
-      .yellow {
-        background-color: #FFD700;
-        box-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 10px #FFD700;
-      }
-
-      /* Example of a purple Bulb */
-      .purple {
-        background-color: #800080;
-        box-shadow: 0 0 5px #800080, 0 0 10px #800080, 0 0 10px #800080;
-      }
-
-
-
     </style>
-
   </head>
   <body>
+    <div class="container">
+      <h1>Quiz Universe</h1>
+      <div class="subtitle"></div>
+
+      <div class="categories">
+        <div class="cat-card">
+          <div class="cat-title">English 🌍</div>
+
+          <b>Vocabulary</b>
+          <br />
+
+          <a class="navbut" href="../ENGLISH/vbeginq1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+
+          <br />
+          <a class="navbut" href="../ENGLISH/vinterq1.html" target="_blank" rel="noopener">&nbsp;Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/vadvanceq1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Grammar</b>
+          <br />
+          <a class="navbut" href="../ENGLISH/grbeginq1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/grinterq1.html" target="_blank" rel="noopener">&nbsp;Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/gradvanceq1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Conversation</b>
+          <br />
+          <a class="navbut" href="../ENGLISH/convobeginq1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/convointerq1.html" target="_blank" rel="noopener">&nbsp;Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/convoadvanceq1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Idioms & Phrases</b>
+          <br />
+          <a class="navbut" href="../ENGLISH/idiombeginq1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/idiominterq1.html" target="_blank" rel="noopener">&nbsp;Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/idiomadvanceq1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Financial</b>
+          <br />
+          <a class="navbut" href="../ENGLISH/fbeginq1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/finterq1.html" target="_blank" rel="noopener">&nbsp;Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/fadvanceq1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Health & Nutrition</b>
+          <br />
+          <a class="navbut" href="../ENGLISH/hnbeginq1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/hninterq1.html" target="_blank" rel="noopener">&nbsp;Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ENGLISH/hnadvanceq1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <!--<div class="cat-desc">English, Spanish, French, and more. Vocabulary, grammar, listening, and more.</div>-->
+          <a class="cat-link" href="../ENGLISH/vbeginq1.html">Explore English</a>
+        </div>
+        
+        <div class="cat-card">
+          <div class="cat-title">Math 🔢</div>
+          
+          <b>Math Definitions</b>
+          <br />
+          <a class="navbut" href="../MATH/mathdefbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/mathdefinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/mathdefadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Math Computation</b>
+          <br />
+          <a class="navbut" href="../MATH/mathcombegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/mathcominter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/mathcomadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Algebra</b>
+          <br />
+          <a class="navbut" href="../MATH/algebrabegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/algebrainter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/algebraadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Geometry</b>
+          <br />
+          <a class="navbut" href="../MATH/geobegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/geointer1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/geoadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Trigonometry</b>
+          <br />
+          <a class="navbut" href="../MATH/trigbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/triginter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/trigadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Calculus</b>
+          <br />
+          <a class="navbut" href="../MATH/calbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/calinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MATH/caladvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <!--<div class="cat-desc">Probability and Statistics</div>-->
+          <a class="cat-link" href="../MATH/mathdefbegin1.html" target="_blank" rel="noopener">Explore Math</a>
+        </div>
+        
+        
+        <div class="cat-card">
+          <div class="cat-title">Science 🧪</div>
+          
+          <!--<div class="cat-desc">Recipes, techniques, world cuisines, and food trivia.</div>-->
+          
+          <b>Science Definitions</b>
+          <br />
+          <a class="navbut" href="../SCIENCE/scidefbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/scidefinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../SCIENCE/scidefadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          <b>Scientific Method</b>
+          <br />
+          <a class="navbut" href="../SCIENCE/scimethbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/scimethinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../SCIENCE/scimethadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          
+          <b>Chemistry</b>
+          <br />
+          <a class="navbut" href="../SCIENCE/chembegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/cheminter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/chemadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Biology</b>
+          <br />
+          <a class="navbut" href="../SCIENCE/biobegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/biointer1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/bioadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Physics</b>
+          <br />
+          <a class="navbut" href="../SCIENCE/phybegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/phyinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/phyadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+
+          
+          <b>Earth Science</b>
+          <br />
+          <a class="navbut" href="../SCIENCE/earthbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/earthinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../SCIENCE/earthadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <a class="cat-link" href="../SCIENCE/scidefbegin1.html" target="_blank" rel="noopener">Explore Science</a>
+        </div>
+        
+        
+        
+        
+
+        <div class="cat-card">
+          <div class="cat-title">Coding 💻</div>
+          
+          
+          <b>Python</b>
+          <br />
+          <a class="navbut" href="../CODING/pybegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/pyinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/pyadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          <b>SQL</b>
+          <br />
+          <a class="navbut" href="../CODING/sqlbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/sqlinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/sqladvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          
+          <b>JavaScript</b>
+          <br />
+          <a class="navbut" href="../CODING/jsbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/jsinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/jsadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          <b>C#</b>
+          <br />
+          <a class="navbut" href="../CODING/csharpbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/csharpinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/csharpadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+
+          <b>Java</b>
+          <br />
+          <a class="navbut" href="../CODING/javabegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/javainter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/javaadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
 
 
 
+          <b>C</b>
+          <br />
+          <a class="navbut" href="../CODING/cbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/cinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../CODING/cadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
 
-    <div><p> &#x1F33F; &#x1F343; &#10052; &#x2745; &#x1F9CA;
-        Happy Holidays  Ellie, Stacey, Alex, Chris, John and Ambra
-        &#x2746; &#x1F9CA; &#x1F33F; &#x1F343; &#10052;
-      </p>
-      <!--<span>
-            &#x1F33F;&#x1F343;&#x1F33F;&#x1F343;&#x1F33F;&#x1F343;&#x1F33F;&#x1F343;
-            &#x1F33F;&#x1F343;&#x1F33F;&#x1F343;&#x1F33F;&#x1F343;&#x1F33F;&#x1F343;
-            &#x1F33F;&#x1F343;&#x1F33F;&#x1F343;&#x1F33F;&#x1F343;&#x1F33F;&#x1F343;
-            </span>-->
+          <a class="cat-link" href="../CODING/pybegin1.html">Explore CODING</a>
+        </div>
+
+        
+
+        
+
+        <div class="cat-card">
+          <div class="cat-title">Future 🚀</div>
+
+          <b>AI Fundamentals</b>
+          <br />
+          <a class="navbut" href="../FUTURE/aifundbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/aifundinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/aifundadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          <b>Machine Learning</b>
+          <br />
+          <a class="navbut" href="../FUTURE/machlearnbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/machlearninter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../FUTURE/machlearnadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+
+
+          <b>Expert Systems</b>
+          <br />
+          <a class="navbut" href="../FUTURE/expertsysbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/expertsysinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../FUTURE/expertsysadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+
+
+          <b>Deep Learning</b>
+          <br />
+          <a class="navbut" href="../FUTURE/deeplearnbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/deeplearninter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../FUTURE/deeplearnadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+
+          <b>Generative AI</b>
+          <br />
+          <a class="navbut" href="../FUTURE/genaibegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/genaiinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/genaiadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Ethics AI</b>
+          <br />
+          <a class="navbut" href="../FUTURE/ethicsbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/ethicsinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../FUTURE/ethicsadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <!--<div class="cat-desc"></div>-->
+          <a class="cat-link" href="../FUTURE/aifundbegin1.html" target="_blank" rel="noopener">Explore Future</a>
+        </div>
+        
+        
+
+        <div class="cat-card">
+          <div class="cat-title">Router 🌐</div>
+
+          <b>Cisco</b>
+          <br />
+          <a class="navbut" href="../ROUTER/ciscobegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/ciscointer1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/ciscoadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Juniper</b>
+          <br />
+          <a class="navbut" href="../ROUTER/juniperbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/juniperinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../ROUTER/juniperadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+
+          <b>Huawei</b>
+          <br />
+          <a class="navbut" href="../ROUTER/huaweibegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/huaweiinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/huaweiadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          
+          <b>Nokia</b>
+          <br />
+          <a class="navbut" href="../ROUTER/nokiabegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/nokiainter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/nokiaadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+
+          <b>MikroTik</b>
+          <br />
+          <a class="navbut" href="ROUTER/mikrotikbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/mikrotikinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../ROUTER/mikrotikadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+
+
+          <b>TPLink</b>
+          <br />
+          <a class="navbut" href="../ROUTER/tplinkbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/tplinkinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../ROUTER/tplinkadvance1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <a class="cat-link" href="../ROUTER/ciscobegin1.html">Explore Routers</a>
+        </div>
+        
+        
+        
+        <div class="cat-card">
+          <div class="cat-title">Cyber 🔒</div>
+          
+          <b>IP Addressing ️</b>
+          <br />
+          <a class="navbut" href="CYBER/ipaddressbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/ipaddressinter1.html" target="_blank" rel="noopener">Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/ipaddressadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b>Web Protocols ️</b>
+          <br />
+          <a class="navbut" href="CYBER/webprotocolbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/webprotocolinter1.html" target="_blank" rel="noopener">Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/webprotocoladv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          <b> Cyber Threats</b>
+          <br />
+          <a class="navbut" href="CYBER/cyberthreatsbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/cyberthreatsinter1.html" target="_blank" rel="noopener">Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/cyberthreatsadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          <b>Network Security</b>
+          <br />
+          <a class="navbut" href="CYBER/networksecuritybegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/networksecurityinter1.html" target="_blank" rel="noopener">Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/networksecurityadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+          <b>Encryption️</b>
+          <br />
+          <a class="navbut" href="CYBER/encryption️begin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/encryption️inter1.html" target="_blank" rel="noopener">Intermediate&nbsp;</a>
+          <br />
+          <a class="navbut" href="CYBER/encryption️adv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          
+          
+        <b>Cloud Computing</b>
+        <br />
+        <a class="navbut" href="CYBER/cloudbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+        <br />
+        <a class="navbut" href="CYBER/cloudinter1.html" target="_blank" rel="noopener">Intermediate&nbsp;</a>
+        <br />
+        <a class="navbut" href="CYBER/cloudadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+        <br />
+        <br />
+          
+        
+
+          
+          
+        <a class="cat-link" href="CYBER/ipaddressbegin1.html">Explore Cyber</a>
+      </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <div class="cat-card">
+          <div class="cat-title">Music 🎵</div>
+
+          <b>Music</b>
+          <br />
+          <a class="navbut" href="../MUSIC/musicb1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/musicinter1.html" target="_blank" rel="noopener">&nbsp;Intermediate &nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/musicadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Music Theory</b>
+          <br />
+          <a class="navbut" href="../MUSIC/musictheorybegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/musictheoryinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../MUSIC/musictheoryadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Instruments</b>
+          <br />
+          <a class="navbut" href="../MUSIC/instrumentsbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/instrumentsinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate &nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../MUSIC/instrumentsadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Music Genres</b>
+          <br />
+          <a class="navbut" href="../MUSIC/musicgenresbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/musicgenresinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate&nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../MUSIC/musicgenresadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>Music Production</b>
+          <br />
+          <a class="navbut" href="../MUSIC/musicprodbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/musicprodinter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate&nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../MUSIC/musicprodadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+
+          <b>SongWriting</b>
+          <br />
+          <a class="navbut" href="../MUSIC/songwritingbegin1.html" target="_blank" rel="noopener">&nbsp;Beginner&nbsp;</a>
+          <br />
+          <a class="navbut" href="../MUSIC/songwritinginter1.html" target="_blank" rel="noopener">
+            &nbsp;Intermediate&nbsp;
+          </a>
+          <br />
+          <a class="navbut" href="../MUSIC/songwritingadv1.html" target="_blank" rel="noopener">&nbsp;Advanced&nbsp;</a>
+          <br />
+          <br />
+          <a class="cat-link" href="../MUSIC/musicb1.html">Explore Music</a>
+          </div>
+          
+         
+            
+          <br />
+   
+
+         
+        </div>
+      </div>
     </div>
-    <span>
-    <div class="bulb" id="flashing-bulb-1"></div>
-    <div class="bulb red" style="animation-duration: 0.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 1.2s;"></div>
-    <div class="bulb purple" style="animation-duration: 1.0s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb yellow" style="animation-duration: 2.2s;"></div>
-    <div class="bulb blue" style="animation-duration: 2.s;"></div>
-    <div class="bulb orange" style="animation-duration: 0.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 1.9s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb blue" style="animation-duration: 2.6s;"></div>
-    <div class="bulb yellow" style="animation-duration: 3.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 4.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 2.8s;"></div>
-    <div class="bulb orange" style="animation-duration: 0.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 1.9s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb blue" style="animation-duration: 2.6s;"></div>
-    <div class="bulb yellow" style="animation-duration: 3.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 4.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 2.8s;"></div>
-  
-    <!--<div class="bulb" id="flashing-bulb-1"></div>-->
-   <!-- <div class="bulb red" style="animation-duration: 0.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 1.4s;"></div>
-    <div class="bulb purple" style="animation-duration: 1.9s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb yellow" style="animation-duration: 2.4s;"></div>
-    <div class="bulb blue" style="animation-duration: 2.3s;"></div>-->
-    <!--<div class="bulb" id="flashing-bulb-1"></div>-->
-   <!-- <div class="bulb red" style="animation-duration: 0.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 0.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 1.9s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb blue" style="animation-duration: 2.6s;"></div>
-    <div class="bulb yellow" style="animation-duration: 3.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 4.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 2.8s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb blue" style="animation-duration: 2.8s;"></div>
-    <div class="bulb yellow" style="animation-duration: 3.4s;"></div>
-    <div class="bulb red" style="animation-duration: 2.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 2.5s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb blue" style="animation-duration: 3.0s;"></div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb orange" style="animation-duration: 5.8s;"></div>
-    <div class="bulb purple" style="animation-duration: 3.9s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb yellow" style="animation-duration: 2.6s;"></div>
-    <div class="bulb blue" style="animation-duration: 1.9s;"></div>
-    <div class="bulb orange" style="animation-duration: 3.8s;"></div>
-    <div class="bulb red" style="animation-duration: 2.4s;"></div>
-    <div class="bulb green" style="animation-duration: 1.4s;"> </div>
-    <div class="bulb yellow" style="animation-duration: 2.4s;"></div>-->
-</span>
-
-
-    <canvas id="fireworksCanvas"></canvas>
-
-
-    <script>
-      const canvas = document.getElementById("fireworksCanvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      // Sound effects
-      const launchSounds = ["assets/launch.wav"];
-
-      const explosionSounds = [
-        "assets/explosion1.wav",
-        "assets/explosion2.wav",
-        "assets/explosion3.wav",
-      ];
-
-      function playRandomSound(soundArray) {
-        const sound = soundArray[Math.floor(Math.random() * soundArray.length)];
-        const audio = new Audio(sound);
-        audio.play();
-      }
-
-      class Particle {
-        constructor(x, y, color, velocity) {
-          this.x = x;
-          this.y = y;
-          this.color = color;
-          this.radius = Math.random() * 2 + 1;
-          this.velocity = velocity;
-          this.life = 100;
-          this.alpha = 1;
-          this.shimmer = Math.random() < 0.3; // 30% chance of shimmer
-        }
-
-        draw() {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          let alpha = this.alpha;
-          if (this.shimmer) {
-            alpha *= 0.5 + Math.random() * 0.5; // Random shimmer effect
-          }
-          ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${alpha})`;
-          ctx.fill();
-        }
-
-        update() {
-          this.x += this.velocity.x;
-          this.y += this.velocity.y;
-          this.velocity.y += 0.05; // gravity
-          this.life--;
-          this.alpha -= 0.01;
-        }
-      }
-
-      class Firework {
-        constructor(x, y) {
-          this.x = x;
-          this.y = canvas.height;
-          this.targetX = x;
-          this.targetY = y;
-          this.color = {
-            r: Math.floor(Math.random() * 255),
-            g: Math.floor(Math.random() * 255),
-            b: Math.floor(Math.random() * 255),
-          };
-          const angle = (Math.random() * Math.PI) / 4 - Math.PI / 8;
-          const speed = Math.random() * 3 + 5;
-          this.velocity = {
-            x: Math.sin(angle) * speed,
-            y: -Math.cos(angle) * speed,
-          };
-          this.particles = [];
-          this.trail = [];
-          this.exploded = false;
-          this.explosionProgress = 0;
-          this.hasShimmer = Math.random() < 0.5; // 50% chance of shimmering trail
-
-          playRandomSound(launchSounds);
-        }
-
-        explode() {
-          for (let i = 0; i < 150; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const speed = Math.random() * 3 + 1;
-            const velocity = {
-              x: Math.cos(angle) * speed,
-              y: Math.sin(angle) * speed,
-            };
-            this.particles.push(
-              new Particle(this.x, this.y, this.color, velocity)
-            );
-          }
-          this.exploded = true;
-          playRandomSound(explosionSounds);
-        }
-
-        update() {
-          if (!this.exploded) {
-            this.x += this.velocity.x;
-            this.y += this.velocity.y;
-            this.velocity.y += 0.05;
-            this.trail.push(
-              new Particle(this.x, this.y, this.color, { x: 0, y: 0 })
-            );
-            if (this.trail.length > 20) this.trail.shift();
-            if (this.velocity.y >= 0 || this.y <= this.targetY) this.explode();
-          } else {
-            this.explosionProgress += 0.02;
-            this.particles.forEach((particle) => {
-              particle.update();
-              particle.draw();
-            });
-            this.particles = this.particles.filter(
-              (particle) => particle.life > 0
-            );
-          }
-
-          this.trail.forEach((particle, index) => {
-            particle.alpha =
-              (index / this.trail.length) * (1 - this.explosionProgress);
-            if (this.hasShimmer) {
-              particle.shimmer = true;
-            }
-            particle.draw();
-          });
-        }
-
-        draw() {
-          if (!this.exploded) {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
-            ctx.fill();
-          }
-        }
-      }
-
-      let fireworks = [];
-
-      function animate() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        fireworks.forEach((firework) => {
-          firework.update();
-          firework.draw();
-        });
-
-        if (Math.random() < 0.05) {
-          const x = Math.random() * canvas.width;
-          const y = (Math.random() * canvas.height) / 2;
-          fireworks.push(new Firework(x, y));
-        }
-
-        fireworks = fireworks.filter(
-          (firework) => !firework.exploded || firework.particles.length > 0
-        );
-
-        requestAnimationFrame(animate);
-      }
-
-      animate();
-
-      // Resize canvas when window is resized
-      window.addEventListener("resize", () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
-
-      // Create firework on click
-      canvas.addEventListener("click", (event) => {
-        fireworks.push(new Firework(event.clientX, event.clientY));
-      });
-    </script>
   </body>
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+        <!--Sub-Category,Focus
+        IP Addressing,"IPv4/v6, Subnetting, and Routing."
+        Web Protocols,"HTTP, DNS, SSL/TLS, and APIs."
+        Encryption,"Cryptography, Keys, and Data Integrity."
+        Cloud Computing,"Virtualization, SaaS/PaaS, and Shared Responsibility."
+        Cyber Threats,"Malware, Phishing, and Social Engineering."
+        Network Security,"Firewalls, VPNs, IDS/IPS, and Access Control."-->
+        
+        
